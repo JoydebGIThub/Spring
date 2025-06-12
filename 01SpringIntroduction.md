@@ -34,6 +34,42 @@ ApplicationContext applicationContext =
 - In `ClassPathXmlApplicationContext` we need to pass the path where we store the object
 - With this single particular object `applicationContext` we can `access all the objects`. It is the entry point of all the object
 
+## Setter Injection:
+- We need an container to create the object. We create the container using `ApplicationContext`. But to use the spring we need a `spring jar file`.
+- So, 1st we need to **add a jar file**
+
+![image](https://github.com/user-attachments/assets/446476b8-f212-40f7-aaf3-c2e0526bda5f)
+![image](https://github.com/user-attachments/assets/9e20cbbc-eb3b-46da-ad6d-30f3f90f5b57)
+
+- now we need to create a container and create the object there. And all the things present in the `container` is called as `bean`
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd">
+        <!-- id means object name  -->
+	<bean id="address" class="com.joydeb.Address">
+		<!-- name should be the exact the setter name -->
+		<property name="address" value="Kolkata"></property>	
+	</bean>
+	<bean id="employee" class="com.joydeb.Employee">
+		<property name="name" value="Joydeb"></property>	
+		<!-- pass the name of the reference object -->
+		<property name="address" ref="address"></property> <!-- dependency injection -->
+	</bean>
+</beans>
+```
+
+- 
+
+
+
+
+
+
+
 
 
 
