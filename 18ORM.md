@@ -267,13 +267,67 @@ public class SpringDBConfig {
 }
 ```
 
+# What is Spring ORM?
+Spring ORM (Object-Relational Mapping) is a part of the broader Spring Framework that provides integration with various Object-Relational Mapping (ORM) frameworks, such as Hibernate, JPA (Java Persistence API), and JDO (Java Data Objects). ORM frameworks facilitate the mapping between object-oriented domain models and relational database tables, allowing developers to work with database entities in an object-oriented manner.
+Spring ORM simplifies the integration of ORM frameworks with Spring applications by providing consistent transaction management, exception handling, and other features. It abstracts away the complexities of working directly with ORM frameworks, allowing developers to focus on writing business logic rather than dealing with low-level database interactions.
 
+## Key features of Spring ORM include:
+1. `Data source management`: Spring manages the connection to databases by using Data source[DriverManagerDataSource],  which allows to swap the Data source between production and test environments.
 
+```xml
+<bean id="cst_DataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource" >
+        <property name="driverClassName" value="${cst_db_driver}" />
+        <property name="url" value="${cst_db_url}" />
+        <property name="username" value="${cst_user}" />
+        <property name="password" value="${cst_password}" />
+    </bean>
 
+```
 
+2. `Transaction Management`: Spring ORM provides robust transaction management capabilities, allowing developers to declare transactions declaratively using annotations or XML configuration.
 
+```xml
+<tx:annotation-driven transaction-manager="txManager"/> //This enables @Transactional Annotation to work	
+<bean id="txManager" class="org.springframework.orm.jpa.JpaTransactionManager"> <!--  standard name for transactionManager is transactionManager-->
+		<property name="entityManagerFactory" ref="cst_entityManagerFactory" />
+</bean>
 
+```
 
+```java
+//In DAO Impl: use @Transactional Annotation on the top of the class
+@PersistenceContext
+private EntityManager entityManager;
+
+```
+
+3. `Exception Translation`: It translates database-specific exceptions into Spring's generic DataAccessException hierarchy, making exception handling more consistent across different database vendors.
+
+4. `Resource Management`: Spring ORM handles the configuration and creation of persistence resources such as EntityManagerFactory(JPA), EntityManager.  Further these resources can be plugged in by using variety of data sources. Pluggable Data sources and resource management enables loose coupling among the application components.
+
+```xml
+<bean id="cst_entityManagerFactory"	class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+	<property name="dataSource" ref="cst_DataSource" />
+	<property name="jpaVendorAdapter">
+	<bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+		<property name="showSql" value="true" />
+		<property name="generateDdl" value="true" />
+		<property name="databasePlatform" value="org.hibernate.dialect.MySQLDialect" />
+	</bean>
+	</property>
+	<property name="packagesToScan" value="com.accenture.lkm.entity"></property>
+</bean>
+
+```
+
+## What is @Component, @Service, @Repository Annotation do in Spring Application ?
+The `@Component, @Service, and @Repository` annotations are all **stereotype** annotations in Spring that are used to separate layers in an application.
+The **@Component annotation** is a general-purpose annotation that can be used to `mark any class as a Spring bean`. This means that the class will be automatically detected and managed by the Spring container.
+The **@Service annotation** is a specialization of the `@Component` annotation that is used to `mark classes that belong to the service layer`. Service layer classes typically contain business logic that is used by other parts of the application.
+The **@Repository annotation** is another specialization of the `@Component` annotation that is used to `mark classes that belong to the persistence layer`. Persistence layer classes typically contain code that interacts with a database.
+
+## What is the purpose of BeanUtils.copyProperties in spring ?
+In Spring, `BeanUtils.copyProperties` copies the property values of a source bean into a target bean, only setting properties defined in the given  class (bean and entity). The source and target classes should have properties with same name and type.
 
 
 
