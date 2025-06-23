@@ -222,6 +222,24 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 }
 ```
 
+## @PersistenceContext(type = PersistenceContextType.TRANSACTION) VS @PersistenceContext(type = PersistenceContextType.EXTENDED) ?
+### @PersistenceContext(type = PersistenceContextType.TRANSACTION) (Default):
+This is the default behavior and the most commonly used type.
+The persistence context is tied to the lifecycle of a single transaction.
+It's created when the transaction starts and is closed/cleared when the transaction ends (commit or rollback).
+#### Benefits:
+More memory efficient as entities are cleared after each transaction.
+Ensures data consistency within a single transaction.
+
+### @PersistenceContext(type = PersistenceContextType.EXTENDED):
+The persistence context exists across multiple transactions until the bean itself is destroyed.
+#### Benefits:
+Enables building a "conversation" with the client where data can be accumulated across method calls within the bean's lifecycle.
+Useful for scenarios where data needs to be persisted at the end of a user interaction rather than within each individual method call.
+
+![image](https://github.com/user-attachments/assets/b64baf21-365d-4600-995f-82dd7964bec7)
+
+
 # Transaction Time out
 It will help us in the case of `OTP`. We want the transaction should be stop within 10 min if the OTP is not conformed. Timeout always be in `secounds`
 
