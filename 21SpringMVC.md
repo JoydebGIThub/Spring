@@ -34,7 +34,7 @@ Create web application:
  
 ![image](https://github.com/user-attachments/assets/79a9ef19-82d7-4c6b-9921-98e6e319b4ce)
 
-##### web.xml
+### web.xml
 It is the entry point where we store all the `mapping`. Here we metion the welcome page and also mentain the servlet mapping.
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -57,7 +57,7 @@ xsi:schemaLocation="http://java.sun.com/xml/ns/javaee,http://java.sun.com/xml/ns
 </web-app>
 ```
 
-##### Login.html
+### Login.html
 ```html
 <!DOCTYPE html>
 <html>
@@ -95,7 +95,48 @@ xsi:schemaLocation="http://java.sun.com/xml/ns/javaee,http://java.sun.com/xml/ns
 ![image](https://github.com/user-attachments/assets/fa46bc74-4c78-4fd9-acc0-7dc5d7cd8268)
 
 - This class will configure everything and then show the `success.html` if the login is true if not then `failure.html`
+- When a **request come** it goes to the **web server** then it forwared to the **web container** it will read `web.xml` file then `web container` load the **DispatcherServlet** it is responsible to send the request to the **controller**.
 
+### DispatcherServlet
+It handle all the incoming request just like the single handler.It read the confiuration file Naming convention for spring configuration file (xml)- servletName-Servlet.xml
+It creates the  DispatcherServletWebApplicationContext It sends the request to BackEndController after getting the view name form the backend controller ,it send the view to the browser
 
+- Servlet file
 
+![image](https://github.com/user-attachments/assets/54dffaea-9f39-4083-b15c-dce822a3e14f)
+
+- web file for configuration of the dispatcherServlet
+
+![image](https://github.com/user-attachments/assets/42d634b3-f1a0-4270-81f3-245c77c68e13)
+
+- Controller class
+
+![image](https://github.com/user-attachments/assets/641cba6b-ae92-4ca5-b60e-afdb7a6dc51d)
+
+- here in controller we use `ModelAndView`, it has certain method called `setView` and `addObject` it can hold both the things view and data so we use this datatype
+
+```java
+		ModelAndView modelAndView = new ModelAndView();
+
+		if (returnValue.equals("success")) {
+			modelAndView.setViewName("success.jsp");
+			modelAndView.addObject("message", "Welcome: " + userName);
+		} else {
+			modelAndView.setViewName("failure.jsp");
+			modelAndView.addObject("errorMessage","Please Login again with valid credentials");
+		}
+		return modelAndView;
+```
+
+- View
+
+![image](https://github.com/user-attachments/assets/37664b25-9131-4d18-b968-6aaf9c0c5a87)
+
+- Login
+
+![image](https://github.com/user-attachments/assets/8b84dc3e-45d1-4b27-9e77-eec5368b4690)
+
+- success
+
+![image](https://github.com/user-attachments/assets/55bb8502-92da-4f13-89cd-96cae5485b4a)
 
